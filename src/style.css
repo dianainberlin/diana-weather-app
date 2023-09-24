@@ -1,0 +1,189 @@
+body {
+  background: linear-gradient(
+    180deg,
+    rgb(255, 255, 255) 0%,
+    rgb(81, 159, 222) 100%
+  );
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}
+
+.background-clip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .background-clip {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .background-clip {
+    width: auto;
+    height: 100%;
+  }
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+.search-city {
+  background: rgba(255, 255, 255, 0.5);
+  border: 0;
+  border-radius: 4px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 200px;
+}
+
+.search-button {
+  background: #0275d8;
+  border: 0;
+  border-radius: 4px;
+  padding: 5px 20px;
+  color: white;
+}
+
+input,
+textarea {
+  outline: 0;
+}
+
+.curren-location-button {
+  background: rgba(255, 255, 255, 0.5);
+  border: 0;
+  border-radius: 4px;
+  padding: 5px 20px;
+  margin-left: -20px;
+}
+
+.search-button:hover,
+.curren-location-button:hover {
+  background: #5bc0de;
+}
+
+.card {
+  background: rgba(81, 159, 222, 0.3);
+  border: 0;
+  border-radius: 20px;
+  color: white;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.weather-card {
+  width: 450px;
+}
+
+.weather-card .card {
+  margin: 15px auto;
+}
+
+.weather-card h1,
+h6,
+h5 {
+  text-align: center;
+}
+
+.weather-card h1 {
+  font-size: 30px;
+  font-weight: 200;
+}
+
+.weather-card h6 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.weather-card h5 {
+  font-size: 16px;
+  font-weight: 300;
+  margin: 5px 40px;
+}
+
+.weather-illustration {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.main-temp-text {
+  font-size: 60px;
+  font-weight: 200;
+}
+
+.convert-button {
+  color: white;
+  font-size: 20px;
+  font-weight: 300;
+  margin-top: 12px;
+  position: absolute;
+  text-decoration: none;
+}
+
+.main-info-text {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 0.1px;
+}
+
+.main-icon {
+  display: block;
+  margin: 0 auto;
+}
+
+.temp-unit {
+  font-size: 20px;
+  letter-spacing: 1.5px;
+}
+
+.next-hours h2,
+.next-days h2 {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.temp-per-hour {
+  text-align: center;
+  line-height: 2;
+}
+
+.table-days-container {
+  text-align: center;
+}
+
+.day-icon {
+  display: block;
+  margin: 10px auto;
+}
+
+.day {
+  text-align: left;
+}
+
+.widgets {
+  cursor: pointer;
+  width: 450px;
+  transition: all 250ms ease-in-out;
+}
+
+.widgets .card {
+  margin: 4px auto;
+  background: rgba(78, 155, 218, 0.57);
+  cursor: pointer;
+}
+
+.widgets .card:hover {
+  background: rgba(21, 107, 177, 0.57);
+}
+
+footer {
+  color: #0275d8;
+  padding: 10px;
+  text-align: center;
+}
