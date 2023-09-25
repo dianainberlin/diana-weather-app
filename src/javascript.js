@@ -33,7 +33,8 @@ function showTemperature(response) {
     response.data.wind.speed
   );
   console.log(response);
-  console.log(response.data.wind.speed);
+  document.querySelector("#weatherDescription").innerHTML =
+    response.data.weather[0].description;
 }
 
 // ----- Search City
