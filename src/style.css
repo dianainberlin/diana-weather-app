@@ -126,10 +126,12 @@ h5 {
   text-decoration: none;
 }
 
-.main-info-text {
+ul {
   font-size: 12px;
   font-weight: 300;
-  line-height: 0.1px;
+  line-height: 1.25;
+  list-style: none;
+  padding-left: 0;
 }
 
 .main-icon {
