@@ -38,6 +38,9 @@ function showTemperature(response) {
   document
     .querySelector("#weather-icon")
     .setAttribute("src", response.data.condition.icon_url);
+  document
+    .querySelector("#weather-icon")
+    .setAttribute("alt", response.data.condition.icon);
 }
 
 // ----- Search City
