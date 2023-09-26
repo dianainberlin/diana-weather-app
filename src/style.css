@@ -120,6 +120,10 @@ h5 {
   margin-bottom: 20px;
 }
 
+.weather-icon {
+  text-align: right;
+}
+
 .convert-button {
   color: white;
   font-size: 20px;

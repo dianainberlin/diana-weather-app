@@ -21,7 +21,6 @@ currentLocButton.addEventListener("click", getCurrentLocation);
 
 // ----- Display Weather Data
 function showTemperature(response) {
-  console.log(response);
   document.querySelector("#current-city").innerHTML = response.data.city;
   document.querySelector("#mainTempNumber").innerHTML = Math.round(
     response.data.temperature.current
@@ -36,8 +35,9 @@ function showTemperature(response) {
   );
   document.querySelector("#weatherDescription").innerHTML =
     response.data.condition.description;
-  document.querySelector("img .weather-icon").innerHTML =
-    response.data.condition.icon_url;
+  document
+    .querySelector("#weather-icon")
+    .setAttribute("src", response.data.condition.icon_url);
 }
 
 // ----- Search City
