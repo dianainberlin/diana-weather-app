@@ -3,9 +3,9 @@ function showPosition(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
 
-  let apiKey = "96771e971243152d6b8948878c26adde";
-  let apiEndPoint = "https://api.openweathermap.org/data/2.5/weather?";
-  let apiUrl = `${apiEndPoint}lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let apiKey = "fdbbb67f1d9b8ba71b3b07f3d6t4a6od";
+  let apiEndPoint = "https://api.shecodes.io/weather/v1/current?";
+  let apiUrl = `${apiEndPoint}lon=${lon}&lat=${lat}&key=${apiKey}`;
 
   axios.get(apiUrl).then(showTemperature);
 }
@@ -21,27 +21,30 @@ currentLocButton.addEventListener("click", getCurrentLocation);
 
 // ----- Display Weather Data
 function showTemperature(response) {
-  document.querySelector("#current-city").innerHTML = response.data.name;
+  console.log(response);
+  document.querySelector("#current-city").innerHTML = response.data.city;
   document.querySelector("#mainTempNumber").innerHTML = Math.round(
-    response.data.main.temp
+    response.data.temperature.current
   );
   document.querySelector("#feelsLikeTempNumber").innerHTML = Math.round(
-    response.data.main.feels_like
+    response.data.temperature.feels_like
   );
-  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  document.querySelector("#humidity").innerHTML =
+    response.data.temperature.humidity;
   document.querySelector("#windSpeed").innerHTML = Math.round(
     response.data.wind.speed
   );
-  console.log(response);
   document.querySelector("#weatherDescription").innerHTML =
-    response.data.weather[0].description;
+    response.data.condition.description;
+  document.querySelector("img .weather-icon").innerHTML =
+    response.data.condition.icon_url;
 }
 
 // ----- Search City
 function search(city) {
-  let apiKey = "96771e971243152d6b8948878c26adde";
-  let apiEndPoint = "https://api.openweathermap.org/data/2.5/weather?";
-  let apiUrl = `${apiEndPoint}q=${city}&units=metric&appid=${apiKey}`;
+  let apiKey = "fdbbb67f1d9b8ba71b3b07f3d6t4a6od";
+  let apiEndPoint = "https://api.shecodes.io/weather/v1/current?";
+  let apiUrl = `${apiEndPoint}query=${city}&units=metric&key=${apiKey}`;
   axios.get(apiUrl).then(showTemperature);
 }
 
