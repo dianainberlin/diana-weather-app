@@ -168,8 +168,17 @@ h5 {
   line-height: 2;
 }
 
-.table-days-container {
+.table-days-container,
+.forecast {
   text-align: center;
+}
+
+.forecast .row {
+  margin-bottom: 8px;
+}
+
+.forecast-icon {
+  margin-top: -5px;
 }
 
 .day-icon {
