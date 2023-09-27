@@ -45,40 +45,62 @@ function displayHourForecast(hour) {
                 </ul>
               </div>`;
   });
-
   document.querySelector("#forecast-hour").innerHTML = forecastHourHTML;
 }
 
+// ------ Format Day
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
 // ------ Display 7-Day Forecast
-function display7Forecast() {
+function display7Forecast(response) {
+  let forecast = response.data.daily;
+
   let forecastHTML = "";
 
-  let days = ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  days.forEach(function (day) {
+  forecast.forEach(function (forecastDay) {
     forecastHTML =
       forecastHTML +
       `<div class="row day-01">
-                <div class="col day">${day}</div>
+                <div class="col day">${formatDay(forecastDay.time)}</div>
                 <div class="col">
                   <img
-                    src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/broken-clouds-day.png"
+                    src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/${
+                      forecastDay.condition.icon
+                    }.png"
                     alt=""
                     class="forecast-icon"
                     width="30px"
                   />
                 </div>
                 <div class="col">
-                  <span id="max-temperature">22</span
-                  ><span id="max-celcius">°C</span>
+                  <span id="min-temperature">${Math.round(
+                    forecastDay.temperature.minimum
+                  )}</span
+                  ><span id="min-celcius">°C</span>
                 </div>
                 <div class="col">
-                  <span id="min-temperature">28</span
-                  ><span id="min-celcius">°C</span>
+                  <span id="max-temperature">${Math.round(
+                    forecastDay.temperature.maximum
+                  )}</span
+                  ><span id="max-celcius">°C</span>
                 </div>
               </div>`;
   });
-
   document.querySelector("#forecast").innerHTML = forecastHTML;
+}
+
+function getForeCastUrl(city) {
+  let apiKey = "fdbbb67f1d9b8ba71b3b07f3d6t4a6od";
+  let apiEndpoint = "https://api.shecodes.io/weather/v1/forecast?";
+  let apiUrl = `${apiEndpoint}query=${city}&key=${apiKey}&units=metric`;
+
+  axios.get(apiUrl).then(display7Forecast);
 }
 
 // ----- Display Weather Data
@@ -103,6 +125,8 @@ function showTemperature(response) {
   document
     .querySelector("#weather-icon")
     .setAttribute("alt", response.data.condition.icon);
+
+  getForeCastUrl(response.data.city);
 }
 
 // ----- Search City
@@ -124,7 +148,6 @@ let searchButton = document.querySelector("#search-form");
 searchButton.addEventListener("submit", handleSubmit);
 
 search("Berlin");
-display7Forecast();
 
 // ------ Current date ------
 function formatTime(now) {
@@ -202,6 +225,17 @@ function convertTemp(event) {
         32
     );
 
+    document.querySelector("#min-celsius").innerHTML = `°F`;
+    document.querySelector("#max-celsius").innerHTML = `°F`;
+    /*document.querySelector("#min-temperature").innerHTML = Math.round(
+      (Number(document.querySelector("#hour-temperature").innerHTML) * 9) / 5 +
+        32
+    );
+    document.querySelector("#max-temperature").innerHTML = Math.round(
+      (Number(document.querySelector("#hour-temperature").innerHTML) * 9) / 5 +
+        32
+    );*/
+
     let hour1TempUnit = document.querySelector("#hour-1-celsius");
     hour1TempUnit.innerHTML = `°F`;
     let hour1Temp = document.querySelector("#hour1TempNumber");
@@ -243,104 +277,6 @@ function convertTemp(event) {
     let hour6TempNumber = hour6Temp.innerHTML;
     hour6TempNumber = Number(hour6TempNumber);
     hour6Temp.innerHTML = Math.round((hour6TempNumber * 9) / 5 + 32);
-
-    let day1MinTempUnit = document.querySelector("#day-1-min-celsius");
-    day1MinTempUnit.innerHTML = `°F`;
-    let day1MinTemp = document.querySelector("#day1MinTempNumber");
-    let day1MinTempNumber = day1MinTemp.innerHTML;
-    day1MinTempNumber = Number(day1MinTempNumber);
-    day1MinTemp.innerHTML = Math.round((day1MinTempNumber * 9) / 5 + 32);
-
-    let day1MaxTempUnit = document.querySelector("#day-1-max-celsius");
-    day1MaxTempUnit.innerHTML = `°F`;
-    let day1MaxTemp = document.querySelector("#day1MaxTempNumber");
-    let day1MaxTempNumber = day1MaxTemp.innerHTML;
-    day1MaxTempNumber = Number(day1MaxTempNumber);
-    day1MaxTemp.innerHTML = Math.round((day1MaxTempNumber * 9) / 5 + 32);
-
-    let day2MinTempUnit = document.querySelector("#day-2-min-celsius");
-    day2MinTempUnit.innerHTML = `°F`;
-    let day2MinTemp = document.querySelector("#day2MinTempNumber");
-    let day2MinTempNumber = day2MinTemp.innerHTML;
-    day2MinTempNumber = Number(day2MinTempNumber);
-    day2MinTemp.innerHTML = Math.round((day2MinTempNumber * 9) / 5 + 32);
-
-    let day2MaxTempUnit = document.querySelector("#day-2-max-celsius");
-    day2MaxTempUnit.innerHTML = `°F`;
-    let day2MaxTemp = document.querySelector("#day2MaxTempNumber");
-    let day2MaxTempNumber = day2MaxTemp.innerHTML;
-    day2MaxTempNumber = Number(day2MaxTempNumber);
-    day2MaxTemp.innerHTML = Math.round((day2MaxTempNumber * 9) / 5 + 32);
-
-    let day3MinTempUnit = document.querySelector("#day-3-min-celsius");
-    day3MinTempUnit.innerHTML = `°F`;
-    let day3MinTemp = document.querySelector("#day3MinTempNumber");
-    let day3MinTempNumber = day3MinTemp.innerHTML;
-    day3MinTempNumber = Number(day3MinTempNumber);
-    day3MinTemp.innerHTML = Math.round((day3MinTempNumber * 9) / 5 + 32);
-
-    let day3MaxTempUnit = document.querySelector("#day-3-max-celsius");
-    day3MaxTempUnit.innerHTML = `°F`;
-    let day3MaxTemp = document.querySelector("#day3MaxTempNumber");
-    let day3MaxTempNumber = day3MaxTemp.innerHTML;
-    day3MaxTempNumber = Number(day3MaxTempNumber);
-    day3MaxTemp.innerHTML = Math.round((day3MaxTempNumber * 9) / 5 + 32);
-
-    let day4MinTempUnit = document.querySelector("#day-4-min-celsius");
-    day4MinTempUnit.innerHTML = `°F`;
-    let day4MinTemp = document.querySelector("#day4MinTempNumber");
-    let day4MinTempNumber = day4MinTemp.innerHTML;
-    day4MinTempNumber = Number(day4MinTempNumber);
-    day4MinTemp.innerHTML = Math.round((day4MinTempNumber * 9) / 5 + 32);
-
-    let day4MaxTempUnit = document.querySelector("#day-4-max-celsius");
-    day4MaxTempUnit.innerHTML = `°F`;
-    let day4MaxTemp = document.querySelector("#day4MaxTempNumber");
-    let day4MaxTempNumber = day4MaxTemp.innerHTML;
-    day4MaxTempNumber = Number(day4MaxTempNumber);
-    day4MaxTemp.innerHTML = Math.round((day4MaxTempNumber * 9) / 5 + 32);
-
-    let day5MinTempUnit = document.querySelector("#day-5-min-celsius");
-    day5MinTempUnit.innerHTML = `°F`;
-    let day5MinTemp = document.querySelector("#day5MinTempNumber");
-    let day5MinTempNumber = day5MinTemp.innerHTML;
-    day5MinTempNumber = Number(day5MinTempNumber);
-    day5MinTemp.innerHTML = Math.round((day5MinTempNumber * 9) / 5 + 32);
-
-    let day5MaxTempUnit = document.querySelector("#day-5-max-celsius");
-    day5MaxTempUnit.innerHTML = `°F`;
-    let day5MaxTemp = document.querySelector("#day5MaxTempNumber");
-    let day5MaxTempNumber = day5MaxTemp.innerHTML;
-    day5MaxTempNumber = Number(day5MaxTempNumber);
-    day5MaxTemp.innerHTML = Math.round((day5MaxTempNumber * 9) / 5 + 32);
-
-    let day6MinTempUnit = document.querySelector("#day-6-min-celsius");
-    day6MinTempUnit.innerHTML = `°F`;
-    let day6MinTemp = document.querySelector("#day6MinTempNumber");
-    let day6MinTempNumber = day6MinTemp.innerHTML;
-    day6MinTempNumber = Number(day6MinTempNumber);
-    day6MinTemp.innerHTML = Math.round((day6MinTempNumber * 9) / 5 + 32);
-
-    let day6MaxTempUnit = document.querySelector("#day-6-max-celsius");
-    day6MaxTempUnit.innerHTML = `°F`;
-    let day6MaxTemp = document.querySelector("#day6MaxTempNumber");
-    let day6MaxTempNumber = day6MaxTemp.innerHTML;
-    day6MaxTempNumber = Number(day6MaxTempNumber);
-    day6MaxTemp.innerHTML = Math.round((day6MaxTempNumber * 9) / 5 + 32);
-
-    let day7MinTempUnit = document.querySelector("#day-7-min-celsius");
-    day7MinTempUnit.innerHTML = `°F`;
-    let day7MinTemp = document.querySelector("#day7MinTempNumber");
-    let day7MinTempNumber = day7MinTemp.innerHTML;
-    day7MinTempNumber = Number(day7MinTempNumber);
-    day7MinTemp.innerHTML = Math.round((day7MinTempNumber * 9) / 5 + 32);
-
-    let day7MaxTempUnit = document.querySelector("#day-7-max-celsius");
-    day7MaxTempUnit.innerHTML = `°F`;
-    let day7MaxTemp = document.querySelector("#day7MaxTempNumber");
-    let day7MaxTempNumber = day7MaxTemp.innerHTML;
-    day7MaxTempNumber = Number(day7MaxTempNumber);
-    day7MaxTemp.innerHTML = Math.round((day7MaxTempNumber * 9) / 5 + 32);
   } else {
     event.target.innerHTML = `°C | F`;
 
@@ -404,104 +340,6 @@ function convertTemp(event) {
     let hour6TempNumber = hour6Temp.innerHTML;
     hour6TempNumber = Number(hour6TempNumber);
     hour6Temp.innerHTML = Math.round(((hour6TempNumber - 32) * 5) / 9);
-
-    let day1MinTempUnit = document.querySelector("#day-1-min-celsius");
-    day1MinTempUnit.innerHTML = `°C`;
-    let day1MinTemp = document.querySelector("#day1MinTempNumber");
-    let day1MinTempNumber = day1MinTemp.innerHTML;
-    day1MinTempNumber = Number(day1MinTempNumber);
-    day1MinTemp.innerHTML = Math.round(((day1MinTempNumber - 32) * 5) / 9);
-
-    let day1MaxTempUnit = document.querySelector("#day-1-max-celsius");
-    day1MaxTempUnit.innerHTML = `°F`;
-    let day1MaxTemp = document.querySelector("#day1MaxTempNumber");
-    let day1MaxTempNumber = day1MaxTemp.innerHTML;
-    day1MaxTempNumber = Number(day1MaxTempNumber);
-    day1MaxTemp.innerHTML = Math.round(((day1MaxTempNumber - 32) * 5) / 9);
-
-    let day2MinTempUnit = document.querySelector("#day-2-min-celsius");
-    day2MinTempUnit.innerHTML = `°C`;
-    let day2MinTemp = document.querySelector("#day2MinTempNumber");
-    let day2MinTempNumber = day2MinTemp.innerHTML;
-    day2MinTempNumber = Number(day2MinTempNumber);
-    day2MinTemp.innerHTML = Math.round(((day2MinTempNumber - 32) * 5) / 9);
-
-    let day2MaxTempUnit = document.querySelector("#day-2-max-celsius");
-    day2MaxTempUnit.innerHTML = `°C`;
-    let day2MaxTemp = document.querySelector("#day2MaxTempNumber");
-    let day2MaxTempNumber = day2MaxTemp.innerHTML;
-    day2MaxTempNumber = Number(day2MaxTempNumber);
-    day2MaxTemp.innerHTML = Math.round(((day2MaxTempNumber - 32) * 5) / 9);
-
-    let day3MinTempUnit = document.querySelector("#day-3-min-celsius");
-    day3MinTempUnit.innerHTML = `°C`;
-    let day3MinTemp = document.querySelector("#day3MinTempNumber");
-    let day3MinTempNumber = day3MinTemp.innerHTML;
-    day3MinTempNumber = Number(day3MinTempNumber);
-    day3MinTemp.innerHTML = Math.round(((day3MinTempNumber - 32) * 5) / 9);
-
-    let day3MaxTempUnit = document.querySelector("#day-3-max-celsius");
-    day3MaxTempUnit.innerHTML = `°C`;
-    let day3MaxTemp = document.querySelector("#day3MaxTempNumber");
-    let day3MaxTempNumber = day3MaxTemp.innerHTML;
-    day3MaxTempNumber = Number(day3MaxTempNumber);
-    day3MaxTemp.innerHTML = Math.round(((day3MaxTempNumber - 32) * 5) / 9);
-
-    let day4MinTempUnit = document.querySelector("#day-4-min-celsius");
-    day4MinTempUnit.innerHTML = `°C`;
-    let day4MinTemp = document.querySelector("#day4MinTempNumber");
-    let day4MinTempNumber = day4MinTemp.innerHTML;
-    day4MinTempNumber = Number(day4MinTempNumber);
-    day4MinTemp.innerHTML = Math.round(((day4MinTempNumber - 32) * 5) / 9);
-
-    let day4MaxTempUnit = document.querySelector("#day-4-max-celsius");
-    day4MaxTempUnit.innerHTML = `°C`;
-    let day4MaxTemp = document.querySelector("#day4MaxTempNumber");
-    let day4MaxTempNumber = day4MaxTemp.innerHTML;
-    day4MaxTempNumber = Number(day4MaxTempNumber);
-    day4MaxTemp.innerHTML = Math.round(((day4MaxTempNumber - 32) * 5) / 9);
-
-    let day5MinTempUnit = document.querySelector("#day-5-min-celsius");
-    day5MinTempUnit.innerHTML = `°C`;
-    let day5MinTemp = document.querySelector("#day5MinTempNumber");
-    let day5MinTempNumber = day5MinTemp.innerHTML;
-    day5MinTempNumber = Number(day5MinTempNumber);
-    day5MinTemp.innerHTML = Math.round(((day5MinTempNumber - 32) * 5) / 9);
-
-    let day5MaxTempUnit = document.querySelector("#day-5-max-celsius");
-    day5MaxTempUnit.innerHTML = `°C`;
-    let day5MaxTemp = document.querySelector("#day5MaxTempNumber");
-    let day5MaxTempNumber = day5MaxTemp.innerHTML;
-    day5MaxTempNumber = Number(day5MaxTempNumber);
-    day5MaxTemp.innerHTML = Math.round(((day5MaxTempNumber - 32) * 5) / 9);
-
-    let day6MinTempUnit = document.querySelector("#day-6-min-celsius");
-    day6MinTempUnit.innerHTML = `°C`;
-    let day6MinTemp = document.querySelector("#day6MinTempNumber");
-    let day6MinTempNumber = day6MinTemp.innerHTML;
-    day6MinTempNumber = Number(day6MinTempNumber);
-    day6MinTemp.innerHTML = Math.round(((day6MinTempNumber - 32) * 5) / 9);
-
-    let day6MaxTempUnit = document.querySelector("#day-6-max-celsius");
-    day6MaxTempUnit.innerHTML = `°C`;
-    let day6MaxTemp = document.querySelector("#day6MaxTempNumber");
-    let day6MaxTempNumber = day6MaxTemp.innerHTML;
-    day6MaxTempNumber = Number(day6MaxTempNumber);
-    day6MaxTemp.innerHTML = Math.round(((day6MaxTempNumber - 32) * 5) / 9);
-
-    let day7MinTempUnit = document.querySelector("#day-7-min-celsius");
-    day7MinTempUnit.innerHTML = `°C`;
-    let day7MinTemp = document.querySelector("#day7MinTempNumber");
-    let day7MinTempNumber = day7MinTemp.innerHTML;
-    day7MinTempNumber = Number(day7MinTempNumber);
-    day7MinTemp.innerHTML = Math.round(((day7MinTempNumber - 32) * 5) / 9);
-
-    let day7MaxTempUnit = document.querySelector("#day-7-max-celsius");
-    day7MaxTempUnit.innerHTML = `°C`;
-    let day7MaxTemp = document.querySelector("#day7MaxTempNumber");
-    let day7MaxTempNumber = day7MaxTemp.innerHTML;
-    day7MaxTempNumber = Number(day7MaxTempNumber);
-    day7MaxTemp.innerHTML = Math.round(((day7MaxTempNumber - 32) * 5) / 9);
   }
 }
 
