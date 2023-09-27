@@ -20,7 +20,34 @@ let currentLocButton = document.querySelector("#currentLocationButton");
 currentLocButton.addEventListener("click", getCurrentLocation);
 
 // ------ Display 24 Hour Forecast
-function displayHourForecast(){let forecastHourHTML = ""; forecastHourHTML = }
+function displayHourForecast(hour) {
+  let forecastHourHTML = "";
+
+  let hours = ["Now", hour + 1, hour + 2, hour + 3, hour + 4, hour + 5];
+  hours.forEach(function (hour) {
+    forecastHourHTML =
+      forecastHourHTML +
+      `<div class="col temp-00">
+                <ul class="hour-data">
+                  <li>${hour}</li>
+                  <li>
+                    <img
+                      src="http://shecodes-assets.s3.amazonaws.com/api/weather/icons/broken-clouds-day.png"
+                      alt=""
+                      class=""
+                      width="30px"
+                    />
+                  </li>
+                  <li>
+                    <span id="hour1TempNumber">15</span
+                    ><span id="hour-1-celsius">°C</span>
+                  </li>
+                </ul>
+              </div>`;
+  });
+
+  document.querySelector("#forecast-hour").innerHTML = forecastHourHTML;
+}
 
 // ------ Display 7-Day Forecast
 function display7Forecast() {
@@ -98,7 +125,6 @@ searchButton.addEventListener("submit", handleSubmit);
 
 search("Berlin");
 display7Forecast();
-displayHourForecast();
 
 // ------ Current date ------
 function formatTime(now) {
@@ -143,9 +169,11 @@ function formatTime(now) {
   return `${day} ${date} ${month} ${hour}:${minute}`;
 }
 
-let currentTime = document.querySelector("#current-time");
 let now = new Date();
-currentTime.innerHTML = formatTime(now);
+document.querySelector("#current-time").innerHTML = formatTime(now);
+
+let hour = now.getHours();
+displayHourForecast(hour);
 
 // ------ Celcius to Fahrenheit
 
