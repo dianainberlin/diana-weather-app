@@ -197,6 +197,10 @@ function convertTemp(event) {
     feelsLikeTemp.innerHTML = Math.round((feelsLikeTempNumber * 9) / 5 + 32);
 
     document.querySelector("#hour-celsius").innerHTML = `°F`;
+    document.querySelector("#hour-temperature").innerHTML = Math.round(
+      (Number(document.querySelector("#hour-temperature").innerHTML) * 9) / 5 +
+        32
+    );
 
     let hour1TempUnit = document.querySelector("#hour-1-celsius");
     hour1TempUnit.innerHTML = `°F`;
@@ -351,6 +355,13 @@ function convertTemp(event) {
     let feelsLikeTempNumber = feelsLikeTemp.innerHTML;
     feelsLikeTempNumber = Number(feelsLikeTempNumber);
     feelsLikeTemp.innerHTML = Math.round(((feelsLikeTempNumber - 32) * 5) / 9);
+
+    document.querySelector("#hour-celsius").innerHTML = `°C`;
+    document.querySelector("#hour-temperature").innerHTML = Math.round(
+      ((Number(document.querySelector("#hour-temperature").innerHTML) - 32) *
+        5) /
+        9
+    );
 
     let hour1TempUnit = document.querySelector("#hour-1-celsius");
     hour1TempUnit.innerHTML = `°C`;
