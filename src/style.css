@@ -165,6 +165,7 @@ h5 {
 
 .hour-data {
   list-style: none;
+  padding: 0;
 }
 
 .temp-per-hour {

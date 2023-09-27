@@ -27,7 +27,7 @@ function displayHourForecast(hour) {
   hours.forEach(function (hour) {
     forecastHourHTML =
       forecastHourHTML +
-      `<div class="col temp-00">
+      `<div class="col">
                 <ul class="hour-data">
                   <li>${hour}</li>
                   <li>
@@ -39,8 +39,8 @@ function displayHourForecast(hour) {
                     />
                   </li>
                   <li>
-                    <span id="hour1TempNumber">15</span
-                    ><span id="hour-1-celsius">°C</span>
+                    <span id="hour-temperature">15</span
+                    ><span class="hour-celsius" id="hour-celsius">°C</span>
                   </li>
                 </ul>
               </div>`;
@@ -195,6 +195,8 @@ function convertTemp(event) {
     let feelsLikeTempNumber = feelsLikeTemp.innerHTML;
     feelsLikeTempNumber = Number(feelsLikeTempNumber);
     feelsLikeTemp.innerHTML = Math.round((feelsLikeTempNumber * 9) / 5 + 32);
+
+    document.querySelector("#hour-celsius").innerHTML = `°F`;
 
     let hour1TempUnit = document.querySelector("#hour-1-celsius");
     hour1TempUnit.innerHTML = `°F`;
