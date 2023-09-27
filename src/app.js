@@ -20,11 +20,14 @@ let currentLocButton = document.querySelector("#currentLocationButton");
 currentLocButton.addEventListener("click", getCurrentLocation);
 
 // ------ Display 24 Hour Forecast
-function displayHourForecast(hour) {
+function displayHourForecast(response) {
   let forecastHourHTML = "";
 
   let hours = ["Now", hour + 1, hour + 2, hour + 3, hour + 4, hour + 5];
   hours.forEach(function (hour) {
+    if (hour < 8) {
+      hour = `0${hour}`;
+    }
     forecastHourHTML =
       forecastHourHTML +
       `<div class="col">
@@ -79,26 +82,38 @@ function display7Forecast(response) {
                   />
                 </div>
                 <div class="col">
-                  <span id="min-temperature">${Math.round(
+                  <span class="min-temperature" id="min-temperature">${Math.round(
                     forecastDay.temperature.minimum
                   )}</span
-                  ><span id="min-celcius">°C</span>
+                  ><span class="min-celcius" id="min-celsius">°C</span>
                 </div>
                 <div class="col">
-                  <span id="max-temperature">${Math.round(
+                  <span class="max-temperature" id="max-temperature">${Math.round(
                     forecastDay.temperature.maximum
                   )}</span
-                  ><span id="max-celcius">°C</span>
+                  ><span class="max-celcius" id="max-celsius">°C</span>
                 </div>
               </div>`;
   });
   document.querySelector("#forecast").innerHTML = forecastHTML;
 }
 
-function getForeCastUrl(city) {
+function getHourForeCastUrl(coordinates) {
+  let units = "metric";
+  let apiKey = "96771e971243152d6b8948878c26adde";
+  let lat = coordinates.latitude;
+  let lon = coordinates.longitude;
+  let apiEndpoint = "https://pro.openweathermap.org/data/2.5/forecast/hourly?";
+  let apiUrl = `${apiEndpoint}lat=${lat}&lon=${lat}&key=${apiKey}&units=${units}`;
+
+  axios.get(apiUrl).then(displayHourForecast);
+}
+
+function get7ForeCastUrl(city) {
+  let units = "metric";
   let apiKey = "fdbbb67f1d9b8ba71b3b07f3d6t4a6od";
   let apiEndpoint = "https://api.shecodes.io/weather/v1/forecast?";
-  let apiUrl = `${apiEndpoint}query=${city}&key=${apiKey}&units=metric`;
+  let apiUrl = `${apiEndpoint}query=${city}&key=${apiKey}&units=${units}`;
 
   axios.get(apiUrl).then(display7Forecast);
 }
@@ -126,14 +141,16 @@ function showTemperature(response) {
     .querySelector("#weather-icon")
     .setAttribute("alt", response.data.condition.icon);
 
-  getForeCastUrl(response.data.city);
+  get7ForeCastUrl(response.data.city);
+  getHourForeCastUrl(response.data.coordinates);
 }
 
 // ----- Search City
 function search(city) {
+  let units = "metric";
   let apiKey = "fdbbb67f1d9b8ba71b3b07f3d6t4a6od";
   let apiEndPoint = "https://api.shecodes.io/weather/v1/current?";
-  let apiUrl = `${apiEndPoint}query=${city}&units=metric&key=${apiKey}`;
+  let apiUrl = `${apiEndPoint}query=${city}&units=${units}&key=${apiKey}`;
   axios.get(apiUrl).then(showTemperature);
 }
 
@@ -227,56 +244,14 @@ function convertTemp(event) {
 
     document.querySelector("#min-celsius").innerHTML = `°F`;
     document.querySelector("#max-celsius").innerHTML = `°F`;
-    /*document.querySelector("#min-temperature").innerHTML = Math.round(
-      (Number(document.querySelector("#hour-temperature").innerHTML) * 9) / 5 +
+    document.querySelector("#min-temperature").innerHTML = Math.round(
+      (Number(document.querySelector("#min-temperature").innerHTML) * 9) / 5 +
         32
     );
     document.querySelector("#max-temperature").innerHTML = Math.round(
-      (Number(document.querySelector("#hour-temperature").innerHTML) * 9) / 5 +
+      (Number(document.querySelector("#max-temperature").innerHTML) * 9) / 5 +
         32
-    );*/
-
-    let hour1TempUnit = document.querySelector("#hour-1-celsius");
-    hour1TempUnit.innerHTML = `°F`;
-    let hour1Temp = document.querySelector("#hour1TempNumber");
-    let hour1TempNumber = hour1Temp.innerHTML;
-    hour1TempNumber = Number(hour1TempNumber);
-    hour1Temp.innerHTML = Math.round((hour1TempNumber * 9) / 5 + 32);
-
-    let hour2TempUnit = document.querySelector("#hour-2-celsius");
-    hour2TempUnit.innerHTML = `°F`;
-    let hour2Temp = document.querySelector("#hour2TempNumber");
-    let hour2TempNumber = hour2Temp.innerHTML;
-    hour2TempNumber = Number(hour2TempNumber);
-    hour2Temp.innerHTML = Math.round((hour2TempNumber * 9) / 5 + 32);
-
-    let hour3TempUnit = document.querySelector("#hour-3-celsius");
-    hour3TempUnit.innerHTML = `°F`;
-    let hour3Temp = document.querySelector("#hour3TempNumber");
-    let hour3TempNumber = hour3Temp.innerHTML;
-    hour3TempNumber = Number(hour3TempNumber);
-    hour3Temp.innerHTML = Math.round((hour3TempNumber * 9) / 5 + 32);
-
-    let hour4TempUnit = document.querySelector("#hour-4-celsius");
-    hour4TempUnit.innerHTML = `°F`;
-    let hour4Temp = document.querySelector("#hour4TempNumber");
-    let hour4TempNumber = hour4Temp.innerHTML;
-    hour1TempNumber = Number(hour4TempNumber);
-    hour4Temp.innerHTML = Math.round((hour4TempNumber * 9) / 5 + 32);
-
-    let hour5TempUnit = document.querySelector("#hour-5-celsius");
-    hour5TempUnit.innerHTML = `°F`;
-    let hour5Temp = document.querySelector("#hour5TempNumber");
-    let hour5TempNumber = hour5Temp.innerHTML;
-    hour5TempNumber = Number(hour5TempNumber);
-    hour5Temp.innerHTML = Math.round((hour5TempNumber * 9) / 5 + 32);
-
-    let hour6TempUnit = document.querySelector("#hour-6-celsius");
-    hour6TempUnit.innerHTML = `°F`;
-    let hour6Temp = document.querySelector("#hour6TempNumber");
-    let hour6TempNumber = hour6Temp.innerHTML;
-    hour6TempNumber = Number(hour6TempNumber);
-    hour6Temp.innerHTML = Math.round((hour6TempNumber * 9) / 5 + 32);
+    );
   } else {
     event.target.innerHTML = `°C | F`;
 
@@ -298,48 +273,18 @@ function convertTemp(event) {
         5) /
         9
     );
-
-    let hour1TempUnit = document.querySelector("#hour-1-celsius");
-    hour1TempUnit.innerHTML = `°C`;
-    let hour1Temp = document.querySelector("#hour1TempNumber");
-    let hour1TempNumber = hour1Temp.innerHTML;
-    hour1TempNumber = Number(hour1TempNumber);
-    hour1Temp.innerHTML = Math.round(((hour1TempNumber - 32) * 5) / 9);
-
-    let hour2TempUnit = document.querySelector("#hour-2-celsius");
-    hour2TempUnit.innerHTML = `°C`;
-    let hour2Temp = document.querySelector("#hour2TempNumber");
-    let hour2TempNumber = hour2Temp.innerHTML;
-    hour2TempNumber = Number(hour2TempNumber);
-    hour2Temp.innerHTML = Math.round(((hour2TempNumber - 32) * 5) / 9);
-
-    let hour3TempUnit = document.querySelector("#hour-3-celsius");
-    hour3TempUnit.innerHTML = `°C`;
-    let hour3Temp = document.querySelector("#hour3TempNumber");
-    let hour3TempNumber = hour3Temp.innerHTML;
-    hour3TempNumber = Number(hour3TempNumber);
-    hour3Temp.innerHTML = Math.round(((hour3TempNumber - 32) * 5) / 9);
-
-    let hour4TempUnit = document.querySelector("#hour-4-celsius");
-    hour4TempUnit.innerHTML = `°C`;
-    let hour4Temp = document.querySelector("#hour4TempNumber");
-    let hour4TempNumber = hour4Temp.innerHTML;
-    hour4TempNumber = Number(hour4TempNumber);
-    hour4Temp.innerHTML = Math.round(((hour4TempNumber - 32) * 5) / 9);
-
-    let hour5TempUnit = document.querySelector("#hour-5-celsius");
-    hour5TempUnit.innerHTML = `°C`;
-    let hour5Temp = document.querySelector("#hour5TempNumber");
-    let hour5TempNumber = hour5Temp.innerHTML;
-    hour5TempNumber = Number(hour5TempNumber);
-    hour5Temp.innerHTML = Math.round(((hour5TempNumber - 32) * 5) / 9);
-
-    let hour6TempUnit = document.querySelector("#hour-6-celsius");
-    hour6TempUnit.innerHTML = `°C`;
-    let hour6Temp = document.querySelector("#hour6TempNumber");
-    let hour6TempNumber = hour6Temp.innerHTML;
-    hour6TempNumber = Number(hour6TempNumber);
-    hour6Temp.innerHTML = Math.round(((hour6TempNumber - 32) * 5) / 9);
+    document.querySelector("#min-celsius").innerHTML = `°C`;
+    document.querySelector("#max-celsius").innerHTML = `°C`;
+    document.querySelector("#min-temperature").innerHTML = Math.round(
+      ((Number(document.querySelector("#min-temperature").innerHTML) - 32) *
+        5) /
+        9
+    );
+    document.querySelector("#max-temperature").innerHTML = Math.round(
+      ((Number(document.querySelector("#max-temperature").innerHTML) - 32) *
+        5) /
+        9
+    );
   }
 }
 
