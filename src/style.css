@@ -163,6 +163,10 @@ h5 {
   font-weight: 300;
 }
 
+.hour-data {
+  list-style: none;
+}
+
 .temp-per-hour {
   text-align: center;
   line-height: 2;

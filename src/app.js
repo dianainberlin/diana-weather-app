@@ -19,8 +19,11 @@ function getCurrentLocation(event) {
 let currentLocButton = document.querySelector("#currentLocationButton");
 currentLocButton.addEventListener("click", getCurrentLocation);
 
+// ------ Display 24 Hour Forecast
+function displayHourForecast(){let forecastHourHTML = ""; forecastHourHTML = }
+
 // ------ Display 7-Day Forecast
-function displayForecast() {
+function display7Forecast() {
   let forecastHTML = "";
 
   let days = ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -94,7 +97,8 @@ let searchButton = document.querySelector("#search-form");
 searchButton.addEventListener("submit", handleSubmit);
 
 search("Berlin");
-displayForecast();
+display7Forecast();
+displayHourForecast();
 
 // ------ Current date ------
 function formatTime(now) {
