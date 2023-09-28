@@ -22,8 +22,8 @@ currentLocButton.addEventListener("click", getCurrentLocation);
 // ------ Display 24 Hour Forecast
 function displayHourForecast(response) {
   let forecastHourHTML = "";
-
   let hours = ["Now", hour + 1, hour + 2, hour + 3, hour + 4, hour + 5];
+
   hours.forEach(function (hour) {
     if (hour < 8) {
       hour = `0${hour}`;
@@ -98,13 +98,11 @@ function display7Forecast(response) {
   document.querySelector("#forecast").innerHTML = forecastHTML;
 }
 
-function getHourForeCastUrl(coordinates) {
+function getHourForeCastUrl(city) {
   let units = "metric";
-  let apiKey = "96771e971243152d6b8948878c26adde";
-  let lat = coordinates.latitude;
-  let lon = coordinates.longitude;
-  let apiEndpoint = "https://pro.openweathermap.org/data/2.5/forecast/hourly?";
-  let apiUrl = `${apiEndpoint}lat=${lat}&lon=${lat}&key=${apiKey}&units=${units}`;
+  let apiKey = "93fe0d3d16a144f2aac193056232809";
+  let apiEndpoint = "https://api.weatherapi.com/v1/forecast.xml?";
+  let apiUrl = `${apiEndpoint}&key=${apiKey}&q=${city}&days=1&aqi=no&alerts=no`;
 
   axios.get(apiUrl).then(displayHourForecast);
 }
@@ -142,7 +140,7 @@ function showTemperature(response) {
     .setAttribute("alt", response.data.condition.icon);
 
   get7ForeCastUrl(response.data.city);
-  getHourForeCastUrl(response.data.coordinates);
+  getHourForeCastUrl(response.data.city);
 }
 
 // ----- Search City
@@ -213,7 +211,6 @@ let now = new Date();
 document.querySelector("#current-time").innerHTML = formatTime(now);
 
 let hour = now.getHours();
-displayHourForecast(hour);
 
 // ------ Celcius to Fahrenheit
 
