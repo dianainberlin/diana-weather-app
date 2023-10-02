@@ -162,7 +162,7 @@ function handleSubmit(event) {
 let searchButton = document.querySelector("#search-form");
 searchButton.addEventListener("submit", handleSubmit);
 
-search("Manila");
+search("Berlin");
 
 // ------ Current date ------
 function formatTime(now) {
