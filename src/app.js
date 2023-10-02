@@ -164,7 +164,7 @@ searchButton.addEventListener("submit", handleSubmit);
 
 search("Berlin");
 
-// ------ Current date ------
+/*// ------ Current date ------
 function formatTime(now) {
   let days = [
     "Sunday",
@@ -210,7 +210,7 @@ function formatTime(now) {
 let now = new Date();
 document.querySelector("#current-time").innerHTML = formatTime(now);
 
-let hour = now.getHours();
+let hour = now.getHours();*/
 
 // ------ Celcius to Fahrenheit
 
@@ -287,3 +287,18 @@ function convertTemp(event) {
 
 let convertButton = document.querySelector("#mainTempCelsius");
 convertButton.addEventListener("click", convertTemp);
+
+function displayCurrentDate() {
+  let currentTimeElement = document.querySelector("#current-date");
+  let today = moment();
+  currentTimeElement.innerHTML = `${today.format("dddd, D MMMM")}`;
+}
+
+function displayCurrentTime() {
+  let currentTimeElement = document.querySelector("#current-time");
+  let today = moment();
+  currentTimeElement.innerHTML = `${today.format("HH:mm:ss")}`;
+}
+
+setInterval(displayCurrentDate, 0);
+setInterval(displayCurrentTime, 0);
